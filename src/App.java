@@ -1,4 +1,10 @@
 public class App {
+    // top is index 0
+    // right is 5
+    // left is 4
+    // bottom is 2
+    // front is 1
+    //  back is 3
 
     static void printCube(String[][][] cube) {
         for (int f = 0; f < 6; f++) {
@@ -43,6 +49,8 @@ public class App {
     }
 
     static void rotateFaceCW(String[][][] cube, int f) {
+        // Rotates face 90 degrees clockwise 
+
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
 
@@ -55,20 +63,62 @@ public class App {
 
         // copy rotated face back onto original
         for (int r = 0; r < 3; r++) {
-            System.arraycopy(orig[r], 0, rotated[r], 0, 3);
+            System.arraycopy(rotated[r], 0, orig[r], 0, 3);
         }
 
     }
 
+    static void rotateFaceCCW(String[][][] cube, int f) {
+        String[][] orig = cube[f];
+        String[][] rotated = new String[3][3];
+    
+        // CCW: rotated[row][col] = orig[col][2 - row]
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                rotated[row][col] = orig[col][2 - row];
+            }
+        }
+        // copy back
+        for (int r = 0; r < 3; r++) {
+            System.arraycopy(rotated[r], 0, orig[r], 0, 3);
+        }
 
-    public static void rotateTopRow(String[][][] cube) {
-        // top rotates clockwise 90
-        // bottom same
-        //we work with index 1, 3, 4, 5 
-        // row of 1 moves to 4
-        // row of 5 moves to 1
-        // row of 3 to 5
-        //5 to 1
+    }
+
+    static void rotateCubeCW(String[][][] cube) {
+        for (int i = 0; i < 6; i++) {
+            rotateFaceCW(cube, i);
+        }
+        // T, L, R, B
+        int T = 0, R = 5, L = 4, B = 2;
+        String[][] temp = cube[T];
+        cube[T] = cube[L];
+        cube[L] = cube[B];
+        cube[B] = cube[R];
+        cube[R] = temp;
+    }
+
+    static void rotateCubeForward(String[][][] cube) {
+        int T = 0, B = 3, D = 2, F = 1, L = 4, R = 5;
+        String[][] temp = cube[T];
+        cube[T] = cube[F];
+        cube[F] = cube[D];
+        cube[D] = cube[B];
+        cube[B] = temp;
+
+        rotateFaceCW(cube, T);
+        rotateFaceCW(cube, B);
+        rotateFaceCCW(cube, F);
+        rotateFaceCCW(cube, D);
+        rotateFaceCW(cube, L);
+        rotateFaceCCW(cube, R);
+
+    }
+
+    public static void rotateTopRowCW(String[][][] cube) {
+        // top face rotates clockwise 90
+        // bottom stays same
+        // top rows of F, R, B, and L faces are swapped
 
         //rotate top face
         rotateFaceCW(cube, 0);
@@ -93,37 +143,37 @@ public class App {
 
         String[][][] SOLVED = {
             {
-                {"w", "w", "w"}, //0 
+                {"1w", "w", "w"}, //0 
                 {"w", "w", "w"},
                 {"w", "w", "w"}
             },
 
             {
-                {"b", "b", "b"},
+                {"1b", "b", "b"},
                 {"b", "b", "b"},
                 {"b", "b", "b"} //1
             },
 
             {
-                {"y", "y", "y"}, 
+                {"1y", "y", "y"}, 
                 {"y", "y", "y"}, 
                 {"y", "y", "y"} //2
             },
 
             {
-                {"g", "g", "g"}, 
+                {"1g", "g", "g"}, 
                 {"g", "g", "g"},
                 {"g", "g", "g"} //3
             }, 
 
             {
-                {"r", "r", "r"}, 
+                {"1r", "r", "r"}, 
                 {"r", "r", "r"}, 
                 {"r", "r", "r"} //4
             },
 
             {
-                {"o", "o", "o"}, 
+                {"1o", "o", "o"}, 
                 {"o", "o", "o"}, 
                 {"o", "o", "o"} //5
             }
@@ -177,8 +227,78 @@ public class App {
 
         System.out.println("----------");
 
-        rotateTopRow(SOLVED);
 
+        // if move == U: rotateTopFaceCW
+        // if move == D: 2 90 degree CW rotations and flip
+        // if move == R: 3 rotations CW rotations and flip
+        // if move == L: 1 rotation CW and flip
+        // if move == F: 
+
+
+        // U move
+        // rotateTopRowCW(SOLVED);
+        // printCube(SOLVED);
+
+        // // D move
+        // rotateCubeCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+        // rotateTopRowCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+        // printCube(SOLVED);
+
+        // R move
+        // System.out.println("STEP 1: ");
+        // rotateCubeCW(SOLVED);
+        // printCube(SOLVED);
+
+        // System.out.println();
+        // System.out.println("STEP 2: ");
+
+        // rotateCubeCW(SOLVED);
+        // printCube(SOLVED);
+
+        // System.out.println();
+        // System.out.println("STEP 3: ");
+
+
+        // rotateCubeCW(SOLVED);
+        // printCube(SOLVED);
+        
+        // System.out.println();
+        // System.out.println("STEP 4: ");
+
+        // rotateTopRowCW(SOLVED);
+        // printCube(SOLVED);
+
+        
+        // System.out.println();
+        // System.out.println("STEP 5: ");
+
+        // rotateCubeCW(SOLVED);
+        // printCube(SOLVED);
+
+        //L Move
+        // rotateCubeCW(SOLVED);
+        // rotateTopRowCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+        // rotateCubeCW(SOLVED);
+
+        // printCube(SOLVED);
+
+
+
+        //F Move
+
+
+        rotateCubeForward(SOLVED);
+        rotateTopRowCW(SOLVED);
+        rotateCubeForward(SOLVED);
+        rotateCubeForward(SOLVED);
+        rotateCubeForward(SOLVED);
+
+        System.out.println("----------");
         printCube(SOLVED);
 
 
