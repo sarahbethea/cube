@@ -49,6 +49,11 @@ public class Simplifier {
         return isSameFace(move1, move2) && (isPrime(move1) != isPrime(move2));
     }
 
+    static boolean isDouble(String move) {
+        return move.endsWith("2");
+    }
+
+
     public static List<String> simplifyMoves(List<String> moves) {
         List<String> results = new ArrayList<>(moves.size());
 
@@ -62,22 +67,36 @@ public class Simplifier {
             // Get the previous move of results list 
             String lastMove = results.get(results.size() - 1);
 
-            // If move cancels out last move, remove last move and dont add move to list
-            if (areOpposites(lastMove, move)) {
-                results.remove(results.size() - 1);
-            } else {
+            if (isSameFace(lastMove, move)) {
+                // Rule A: identical quarter-turns make a double turn
+                //   "U" + "U"   -> "U2"
+                //   "U'" + "U'" -> "U2"
+                if (!isDouble(lastMove) && !isDouble(move) && lastMove.equals(move)) {
+                    results.set(results.size() - 1, getFace(move) + "2");
+                    continue;
+                }
+
+                // Rule B: opposite quarter-turns cancel out
+                //   "U" + "U'" or "U'" + "U" -> remove both
+                if (areOpposites(lastMove, move)) {
+                    results.remove(results.size() - 1);
+                    continue;
+                }
+
+                // Same face but not to be combined ("U2" "U")
                 results.add(move);
+                continue;
             }
+            // Difference faces
+            results.add(move);
+
         }
         return results;
     }
 
-
     public static String[] simplify(String[] moves) {
         List<String> moveList = toList(moves);
         List<String> results = simplifyMoves(moveList);
-
-        // convert back to String[]
         return toArray(results);
 
     }
