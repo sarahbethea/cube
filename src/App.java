@@ -10,8 +10,7 @@
 // if move == D: 2 90 degree CW rotations and flip
 // if move == R: 3 rotations CW rotations and flip
 // if move == L: 1 rotation CW and flip
-// if move == F: 
-
+// if move == F: (direct)
 
 public class App {
     static void printCube(String[][][] cube) {
@@ -25,7 +24,6 @@ public class App {
             System.out.println();
         }
     }
-
 
     static void rotateFaceCW(String[][][] cube, int f) {
         // Rotates face 90 degrees clockwise 
@@ -93,6 +91,58 @@ public class App {
 
     }
 
+    //helpers for row/col on direct f and b moves.
+    static String[] getRow(String[][] face, int r) {
+        return new String[]{ face[r][0], face[r][1], face[r][2] };
+    }
+    static void setRow(String[][] face, int r, String[] v) {
+        face[r][0] = v[0]; face[r][1] = v[1]; face[r][2] = v[2];
+    }
+    static String[] getCol(String[][] face, int c) {
+        return new String[]{ face[0][c], face[1][c], face[2][c] };
+    }
+    static void setCol(String[][] face, int c, String[] v) {
+        face[0][c] = v[0]; face[1][c] = v[1]; face[2][c] = v[2];
+    }
+    static String[] rev(String[] a) {
+        return new String[]{ a[2], a[1], a[0] };
+    }
+
+    //direct f and b moves
+    static void moveF(String[][][] cube) {
+        final int T=0, F=1, D=2, B=3, L=4, R=5;
+
+        rotateFaceCW(cube, F);
+
+        String[] u = getRow(cube[T], 2);
+        String[] r = getCol(cube[R], 0);
+        String[] d = getRow(cube[D], 0);
+        String[] l = getCol(cube[L], 2);
+
+        //reverse where needed
+        setCol(cube[R], 0, u);
+        setRow(cube[D], 0, r);
+        setCol(cube[L], 2, d);
+        setRow(cube[T], 2, rev(l));
+    }
+
+    static void moveB(String[][][] cube) {
+        final int T=0, F=1, D=2, B=3, L=4, R=5;
+
+        rotateFaceCW(cube, B);
+
+        String[] u = getRow(cube[T], 0);
+        String[] l = getCol(cube[L], 0);
+        String[] d = getRow(cube[D], 2);
+        String[] r = getCol(cube[R], 2);
+
+        //reverse where needed
+        setCol(cube[L], 0, u);
+        setRow(cube[D], 2, l);
+        setCol(cube[R], 2, rev(d));
+        setRow(cube[T], 0, rev(r));
+    }
+
     public static void rotateTopRowCW(String[][][] cube) {
         // top face rotates clockwise 90
         // bottom stays same
@@ -137,18 +187,16 @@ public class App {
                 rotateCubeCW(cube);
                 break;
             case "F":
+                moveF(cube);
                 break;
             case "B":
+                moveB(cube);
                 break;
         }
 
     }
 
-
-
-
     public static void main(String[] args) throws Exception {
-
 
         String[][][] SOLVED = {
             {
@@ -188,41 +236,13 @@ public class App {
             }
         };
 
-
         printCube(SOLVED);
         System.out.println("----------");
 
-        // // U move
-        // applyMove(SOLVED, "U");
-        // printCube(SOLVED);
 
-        // // D move
-        // applyMove(SOLVED, "D");
-        // printCube(SOLVED);
-
-        // // R move 
-        // applyMove(SOLVED, "R");
-        // printCube(SOLVED);
-
-
-
-        //F Move
-
-
-        rotateCubeForward(SOLVED);
-        rotateTopRowCW(SOLVED);
-        rotateCubeForward(SOLVED);
-        rotateCubeForward(SOLVED);
-        rotateCubeForward(SOLVED);
+        applyMove(SOLVED, "B");
 
         System.out.println("----------");
         printCube(SOLVED);
-
-
-
-
-
-
-
     }
 }
