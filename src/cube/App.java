@@ -2,6 +2,7 @@ package cube;
 import cube.Moves;
 import cube.PrintCube;
 import cube.Randomizer;
+import cube.Simplifier;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -43,12 +44,25 @@ public class App {
             }
         };
 
-        // for (String arg : args) {
-        //     Moves.applyMove(SOLVED, arg.toUpperCase());
-        // }
+        for (String arg : args) {
+            Moves.applyMove(SOLVED, arg.toUpperCase());
+        }
 
-        Randomizer.randomize(SOLVED, 12);
+        // Randomizer.randomize(SOLVED, 12);
 
         PrintCube.printCubeBlocks(SOLVED);
+
+        if (args.length == 0) {
+            System.out.println("Usage: java App.java <moves>");
+            return;
+        }
+
+        System.out.println("Simplified moves:");
+        String[] simplifiedMoves = Simplifier.simplify(args);
+
+        for (String move : simplifiedMoves) {
+            System.out.println(move);
+        }
+
     }
 }
