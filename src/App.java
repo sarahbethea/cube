@@ -67,12 +67,12 @@ public class App {
         for (int i = 0; i < 6; i++) {
             rotateFaceCW(cube, i);
         }
-        // T, L, R, B
-        int T = 0, R = 5, L = 4, B = 2;
+        // T, L, R, D
+        int T = 0, R = 5, L = 4, D = 2;
         String[][] temp = cube[T];
         cube[T] = cube[L];
-        cube[L] = cube[B];
-        cube[B] = cube[R];
+        cube[L] = cube[D];
+        cube[D] = cube[R];
         cube[R] = temp;
     }
 
