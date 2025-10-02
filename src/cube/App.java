@@ -1,10 +1,10 @@
 package cube;
 import cube.Moves;
 import cube.PrintCube;
+import cube.Randomizer;
 
 public class App {
     public static void main(String[] args) throws Exception {
-
         String[][][] SOLVED = {
             {
                 {"1w", "w", "w"}, 
@@ -43,9 +43,11 @@ public class App {
             }
         };
 
-        for (String arg : args) {
-            Moves.applyMove(SOLVED, arg.toUpperCase());
-        }
+        // for (String arg : args) {
+        //     Moves.applyMove(SOLVED, arg.toUpperCase());
+        // }
+
+        Randomizer.randomize(SOLVED, 12);
 
         PrintCube.printCubeBlocks(SOLVED);
     }
