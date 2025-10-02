@@ -1,11 +1,19 @@
-public class App {
-    // top is index 0
-    // right is 5
-    // left is 4
-    // bottom is 2
-    // front is 1
-    //  back is 3
+// T (top) index: 0
+// R (right) index: 5
+// L (left) index: 4
+// D (bottom) index: 2
+// F (front) index: 1
+// B (back) index: 3
 
+
+// if move == U: rotateTopFaceCW
+// if move == D: 2 90 degree CW rotations and flip
+// if move == R: 3 rotations CW rotations and flip
+// if move == L: 1 rotation CW and flip
+// if move == F: 
+
+
+public class App {
     static void printCube(String[][][] cube) {
         for (int f = 0; f < 6; f++) {
             for (int r = 0; r < 3; r++) {
@@ -18,39 +26,9 @@ public class App {
         }
     }
 
-    static void printCube2D(String[][] cube) {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 9; j++) {
-                System.out.print(cube[i][j]);
-                if ((j + 1) % 3 == 0) System.out.println(); // newline after 3rd, 6th, 9th
-                else System.out.print(" ");  
-            }
-            System.out.println();
-        }
-    }
-
-    // cube[6][3][3] is the shape
-    static String[][] rotateFace2D(String[][] f, int i) {
-        String temp = f[i][0];
-
-        f[i][0] = f[i][6];
-        f[i][6] = f[i][8];
-        f[i][8] = f[i][2];
-        f[i][2] = temp;
-
-        temp = f[i][1];
-        f[i][1] = f[i][3];
-        f[i][3] = f[i][7];
-        f[i][7] = f[i][5];
-        f[i][5] = temp;
-
-        return f;
-        
-    }
 
     static void rotateFaceCW(String[][][] cube, int f) {
         // Rotates face 90 degrees clockwise 
-
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
 
@@ -65,10 +43,10 @@ public class App {
         for (int r = 0; r < 3; r++) {
             System.arraycopy(rotated[r], 0, orig[r], 0, 3);
         }
-
     }
 
     static void rotateFaceCCW(String[][][] cube, int f) {
+        // Rotate face 90 degrees counterclockwise 
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
     
@@ -132,10 +110,41 @@ public class App {
         cube[F][0] = temp;
     }
 
+    static void applyMove(String[][][] cube, String move) {
+        switch(move) {
+            case "U":
+                rotateTopRowCW(cube);
+                break;
+            case "D":
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                rotateTopRowCW(cube);
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                break;
+            case "R":
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                rotateTopRowCW(cube);
+                rotateCubeCW(cube);
+                break;
+            case "L":
+                rotateCubeCW(cube);
+                rotateTopRowCW(cube);
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                rotateCubeCW(cube);
+                break;
+            case "F":
+                break;
+            case "B":
+                break;
+        }
+
+    }
 
 
-
-    
 
 
     public static void main(String[] args) throws Exception {
@@ -179,112 +188,20 @@ public class App {
             }
         };
 
-        // FRONT = SOLVED[0][1]
-
-        String[][] SOLVED2D = {
-            {"0w", "1w", "2w",
-            "3w", "Cw", "4w",
-            "5w", "6w", "7w"},
-
-            {"0b", "1b", "2b",
-            "3b", "Cb", "4b",
-            "5b", "6b", "7b"},
-
-            {"0y", "1y", "2y", 
-            "3y", "Cy", "4y", 
-            "5y", "6y", "7y"},
-
-            {"0g", "1g", "2g", 
-            "3g", "Cg", "4g", 
-            "5g", "6g", "7g"},
-
-            {"0r", "1r", "2r", 
-            "3r", "Cr", "4r", 
-            "5r", "6r", "7r"},
-
-            {"0o", "1o", "2o", 
-            "3o", "Co", "4o", 
-            "5o", "6o", "7o"}
-        };
-
-        // Whole cube jagged array to play with
-        String[][] JAGGED_SOLVED = {
-            {"w", "w", "w", "o", "o", "o", "r", "r", "r"},
-            {"w", "w", "w", "o", "o", "o", "r", "r", "r"},
-            {"w", "w", "w", "o", "o", "o", "r", "r", "r"},
-            {"b", "b", "b"},
-            {"b", "b", "b"},
-            {"b", "b", "b"},
-            {"g", "g", "g"},
-            {"g", "g", "g"},
-            {"g", "g", "g"},
-            {"y", "y", "y"},
-            {"y", "y", "y"},
-            {"y", "y", "y"},
-        };
 
         printCube(SOLVED);
-
         System.out.println("----------");
 
-
-        // if move == U: rotateTopFaceCW
-        // if move == D: 2 90 degree CW rotations and flip
-        // if move == R: 3 rotations CW rotations and flip
-        // if move == L: 1 rotation CW and flip
-        // if move == F: 
-
-
-        // U move
-        // rotateTopRowCW(SOLVED);
+        // // U move
+        // applyMove(SOLVED, "U");
         // printCube(SOLVED);
 
         // // D move
-        // rotateCubeCW(SOLVED);
-        // rotateCubeCW(SOLVED);
-        // rotateTopRowCW(SOLVED);
-        // rotateCubeCW(SOLVED);
-        // rotateCubeCW(SOLVED);
+        // applyMove(SOLVED, "D");
         // printCube(SOLVED);
 
-        // R move
-        // System.out.println("STEP 1: ");
-        // rotateCubeCW(SOLVED);
-        // printCube(SOLVED);
-
-        // System.out.println();
-        // System.out.println("STEP 2: ");
-
-        // rotateCubeCW(SOLVED);
-        // printCube(SOLVED);
-
-        // System.out.println();
-        // System.out.println("STEP 3: ");
-
-
-        // rotateCubeCW(SOLVED);
-        // printCube(SOLVED);
-        
-        // System.out.println();
-        // System.out.println("STEP 4: ");
-
-        // rotateTopRowCW(SOLVED);
-        // printCube(SOLVED);
-
-        
-        // System.out.println();
-        // System.out.println("STEP 5: ");
-
-        // rotateCubeCW(SOLVED);
-        // printCube(SOLVED);
-
-        //L Move
-        // rotateCubeCW(SOLVED);
-        // rotateTopRowCW(SOLVED);
-        // rotateCubeCW(SOLVED);
-        // rotateCubeCW(SOLVED);
-        // rotateCubeCW(SOLVED);
-
+        // // R move 
+        // applyMove(SOLVED, "R");
         // printCube(SOLVED);
 
 
