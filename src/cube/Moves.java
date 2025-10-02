@@ -26,7 +26,7 @@ public class Moves {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
     
-        // CCW: rotated[row][col] = orig[col][2 - row]
+        // Counterclockwise: rotated[row][col] = orig[col][2 - row]
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 rotated[row][col] = orig[col][2 - row];

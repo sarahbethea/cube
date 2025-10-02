@@ -43,17 +43,10 @@ public class App {
             }
         };
 
-        // Fancy color output without titles:
+        for (String arg : args) {
+            Moves.applyMove(SOLVED, arg.toUpperCase());
+        }
+
         PrintCube.printCubeBlocks(SOLVED);
-        System.out.println("----------");
-
-        Moves.applyMove(SOLVED, "F'");
-        Moves.applyMove(SOLVED, "U");
-        Moves.applyMove(SOLVED, "D");
-        // Moves.applyMove(SOLVED, "U");
-
-        System.out.println("----------");
-        PrintCube.printCubeBlocks(SOLVED);
-
     }
 }
