@@ -53,6 +53,26 @@ public class Simplifier {
         return move.endsWith("2");
     }
 
+    static String flipPrime(String move) {
+        char face = Character.toUpperCase(move.charAt(0));
+        boolean prime = move.length() >= 2 && move.charAt(1) == '\'';
+        return prime ? ("" + face) : (face + "'");
+    }
+
+    static List<String> cancelOutConsecutiveDoubles(List<String> moves) {
+        List<String> results = new ArrayList<>(moves.size());
+
+        for (String move : moves) {
+            if (!results.isEmpty() && move.equals(results.get(results.size() - 1))) {
+                // consecutive identical -> cancel the pair
+                results.remove(results.size() - 1);
+            } else {
+                results.add(move);
+            }   
+        }
+        return results;
+    }
+
 
     public static List<String> simplifyMoves(List<String> moves) {
         List<String> results = new ArrayList<>(moves.size());
@@ -83,6 +103,15 @@ public class Simplifier {
                     continue;
                 }
 
+                // Rule C: one double + one quarter on same face -> opposite of the quarter
+                // "U2" + "U'" -> "U"
+                if (isDouble(lastMove) ^ isDouble(move)) {          // exactly one is a double
+                    String single = isDouble(lastMove) ? move : lastMove; // the quarter move
+                    String flipped = flipPrime(single);                      // flip its prime
+                    results.set(results.size() - 1, flipped);                // replace the pair with flipped single
+                    continue;
+                }
+
                 // Same face but not to be combined ("U2" "U")
                 results.add(move);
                 continue;
@@ -96,7 +125,10 @@ public class Simplifier {
 
     public static String[] simplify(String[] moves) {
         List<String> moveList = toList(moves);
-        List<String> results = simplifyMoves(moveList);
+        List<String> firstPass = simplifyMoves(moveList);
+        // Go over firstPass to cancel out doubles
+        List<String> results = cancelOutConsecutiveDoubles(firstPass);
+
         return toArray(results);
 
     }
