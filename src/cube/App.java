@@ -64,6 +64,20 @@ public class App {
         return out;
     }
 
+    // Print menu of options
+    private static void printMenu() {
+        System.out.println("=== CUBE COMMAND MENU ===");
+        System.out.println("Moves: U, U', U2, D, D', D2, R, R', R2, L, L', L2, F, F', F2, B, B', B2");
+        System.out.println();
+        System.out.println("E          Enter a sequence of moves and display cube state");
+        System.out.println("Q          Quit");
+        System.out.println("M          Menu");
+        System.out.println("SOLVE      Undo all moves and return cube to solved state");
+        System.out.println("RANDOMIZE  Shuffle the cube with <n> random moves");
+        System.out.println("SIMPLIFY   Shorten and clean up the move history");
+        System.out.println("=========================");
+    }
+
     public static void main(String[] args) throws Exception {
         String[][][] SOLVED = deepCopy(SOLVED_TEMPLATE);
 
@@ -89,49 +103,73 @@ public class App {
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "U");
                     break;
-                case "D":
-                    moves.push(move.toUpperCase());
-                    Moves.applyMove(SOLVED, "D");
-                    break;
-                case "R":
-                    moves.push(move.toUpperCase());
-                    Moves.applyMove(SOLVED, "R");
-                    break;
-                case "L":
-                    moves.push(move.toUpperCase());
-                    Moves.applyMove(SOLVED, "L");
-                    break;
-                case "F":
-                    moves.push(move.toUpperCase());
-                    Moves.applyMove(SOLVED, "F");
-                    break;
-                case "B":
-                    moves.push(move.toUpperCase());
-                    Moves.applyMove(SOLVED, "B");
-                    break;
                 case "U'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "U'");
+                    break;
+                case "U2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "U2");
+                    break;
+                case "D":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "D");
                     break;
                 case "D'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "D'");
                     break;
+                case "D2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "D2");
+                    break;
+                case "R":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "R");
+                    break;
                 case "R'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "R'");
+                    break;
+                case "R2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "R2");
+                    break;
+                case "L":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "L");
                     break;
                 case "L'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "L'");
                     break;
+                case "L2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "L2");
+                    break;
+                case "F":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "F");
+                    break;
                 case "F'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "F'");
                     break;
+                case "F2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "F2");
+                    break;
+                case "B":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "B");
+                    break;
                 case "B'":
                     moves.push(move.toUpperCase());
                     Moves.applyMove(SOLVED, "B'");
+                    break;
+                case "B2":
+                    moves.push(move.toUpperCase());
+                    Moves.applyMove(SOLVED, "B2");
                     break;
                 case "SOLVE":
                     List<String> sln = Solve.solve(moves, solution);
@@ -141,15 +179,18 @@ public class App {
                 case "RANDOMIZE":
                     System.out.println("Enter number of moves");
                     int numMoves = Integer.parseInt(scn.nextLine());
-                    Randomizer.randomize(SOLVED, numMoves);
+                    Randomizer.randomize(SOLVED, numMoves, moves);
                     break;
                 case "SIMPLIFY":
                     String[] movesArr = moves.toArray(new String[0]);
+                    System.out.println("Moves: " + movesArr.length);
                     String[] results = Simplifier.simplify(movesArr);
                     System.out.println("Simplified moves:");
                     for (String m : results) {
                         System.out.print(m + " ");
                     }
+                    System.out.println();
+                    System.out.println("Moves: " + results.length);
                     System.out.println();
 
                     System.out.println("Do you want to solve using simplified moves? (y for yes)");
@@ -168,11 +209,14 @@ public class App {
                 case "E":
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
+                case "M":
+                    printMenu();
+                    break;
                 case "Q":
                     scn.close();
                     return;
+
             }
         }
-
     }
 }
