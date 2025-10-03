@@ -1,5 +1,6 @@
 package cube;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 import java.util.Scanner;
 import java.util.List;
@@ -8,67 +9,63 @@ import cube.Moves;
 import cube.PrintCube;
 import cube.Randomizer;
 import cube.Simplifier;
+import cube.Solve;
 
 public class App {
-
     static Stack<String> moves = new Stack<>();
 
-    // static void solve(Stack<String> moves) {
-    //     while (!moves.empty()) {
-    //         String move = moves.pop();
-    //         String reverse = (move.contains("'")) ? move.substring(0, 1) : move + "'";
-    //         System.out.print(reverse + " ");
-    //     }
-    // }
+    private static final String[][][] SOLVED_TEMPLATE = {
+        {
+            {"1w", "w", "w"}, 
+            {"w", "w", "w"},
+            {"w", "w", "w"}
+        },
 
-    static List<String> solve(Stack<String> moves, List<String> solution) {
-        while (!moves.empty()) {
-            String move = moves.pop();
-            String reverse = (move.contains("'")) ? move.substring(0, 1) : move + "'";
-            System.out.print(reverse + " ");
-            solution.add(reverse);
+        {
+            {"1b", "b", "b"},
+            {"b", "b", "b"},
+            {"b", "b", "b"} 
+        },
+
+        {
+            {"1y", "y", "y"}, 
+            {"y", "y", "y"}, 
+            {"y", "y", "y"} 
+        },
+
+        {
+            {"1g", "g", "g"}, 
+            {"g", "g", "g"},
+            {"g", "g", "g"} 
+        }, 
+
+        {
+            {"1r", "r", "r"}, 
+            {"r", "r", "r"}, 
+            {"r", "r", "r"} 
+        },
+
+        {
+            {"1o", "o", "o"}, 
+            {"o", "o", "o"}, 
+            {"o", "o", "o"} 
         }
-        return solution;
+    };
+
+    // Helper to create copy of cube for each game
+    private static String[][][] deepCopy(String[][][] src) {
+        String[][][] out = new String[src.length][][];
+        for (int i = 0; i < src.length; i++) {
+            out[i] = new String[src[i].length][];
+            for (int j = 0; j < src[i].length; j++) {
+                out[i][j] = Arrays.copyOf(src[i][j], src[i][j].length);
+            }
+        }
+        return out;
     }
 
     public static void main(String[] args) throws Exception {
-        String[][][] SOLVED = {
-            {
-                {"1w", "w", "w"}, 
-                {"w", "w", "w"},
-                {"w", "w", "w"}
-            },
-
-            {
-                {"1b", "b", "b"},
-                {"b", "b", "b"},
-                {"b", "b", "b"} 
-            },
-
-            {
-                {"1y", "y", "y"}, 
-                {"y", "y", "y"}, 
-                {"y", "y", "y"} 
-            },
-
-            {
-                {"1g", "g", "g"}, 
-                {"g", "g", "g"},
-                {"g", "g", "g"} 
-            }, 
-
-            {
-                {"1r", "r", "r"}, 
-                {"r", "r", "r"}, 
-                {"r", "r", "r"} 
-            },
-
-            {
-                {"1o", "o", "o"}, 
-                {"o", "o", "o"}, 
-                {"o", "o", "o"} 
-            }
-        };
+        String[][][] SOLVED = deepCopy(SOLVED_TEMPLATE);
 
         PrintCube.printCubeBlocks(SOLVED);
 
@@ -137,7 +134,7 @@ public class App {
                     Moves.applyMove(SOLVED, "B'");
                     break;
                 case "SOLVE":
-                    List<String> sln = solve(moves, solution);
+                    List<String> sln = Solve.solve(moves, solution);
                     Moves.applyMoves(SOLVED, sln);
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
@@ -155,7 +152,7 @@ public class App {
                     }
                     System.out.println();
 
-                    System.out.println("Do you want to solve using simplified moves? y for yes");
+                    System.out.println("Do you want to solve using simplified moves? (y for yes)");
                     String shouldSolve = scn.nextLine();
                     System.out.println(shouldSolve);
                     if (shouldSolve.toUpperCase().equals("Y")) {
@@ -163,7 +160,7 @@ public class App {
                         for (String result : results) {
                             resultsStack.push(result);
                         }
-                        sln = solve(resultsStack, solution);
+                        sln = Solve.solve(resultsStack, solution);
                         Moves.applyMoves(SOLVED, sln);
                         PrintCube.printCubeBlocks(SOLVED);
                     } 
