@@ -12,8 +12,6 @@ public class Randomizer {
     public static void randomize(String[][][] cube, int numMoves, Stack<String>moves) {
         Random random = new Random();
 
-        // Stack<String> moves = new Stack<>();
-
         for (int i = 0; i < numMoves; i++) {
             int randomIndex = random.nextInt(MOVES.length - 1);
             String move = MOVES[randomIndex];
