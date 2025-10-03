@@ -1,15 +1,8 @@
-// r + r' cance
-// u + u -> u2
-// f2 + f' -> f
-// L + L + L -> L'
-// b2 + b2 cancel
-// R + U + U' + R' -> U U' cancels in the middle then R R' cancels
-// same 
-
 package cube;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Simplifier {
     // need to save moves from command line 
@@ -72,7 +65,6 @@ public class Simplifier {
         }
         return results;
     }
-
 
     public static List<String> simplifyMoves(List<String> moves) {
         List<String> results = new ArrayList<>(moves.size());

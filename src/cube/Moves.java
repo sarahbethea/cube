@@ -1,5 +1,7 @@
 package cube;
 
+import java.util.List;
+
 public class Moves {
     public static final int T=0, F=1, D=2, B=3, L=4, R=5;
 
@@ -105,7 +107,7 @@ public class Moves {
         setCol(cube[R], 0, u);
         setRow(cube[D], 0, r);
         setCol(cube[L], 2, d);
-        setRow(cube[T], 2, rev(l));
+        setRow(cube[T], 2, l); 
     }
 
     static void moveB(String[][][] cube) {
@@ -151,6 +153,13 @@ public class Moves {
         rotateCubeCW(cube);
         rotateCubeCW(cube);
         rotateCubeCW(cube);
+    }
+
+    static void applyMoves(String[][][] cube, List<String> moves) {
+        for (int i = 0; i < moves.size(); i++) {
+            String move = moves.get(i);
+            applyMove(cube, move);
+        }
     }
 
     static void applyMove(String[][][] cube, String move) {
@@ -199,6 +208,78 @@ public class Moves {
                 moveF(cube);
                 break;
             case "B'":
+                moveB(cube);
+                moveB(cube);
+                moveB(cube);
+                break;
+            case "U2":
+                moveU(cube);
+                moveU(cube);
+                break;
+            case "D2":
+                moveD(cube);
+                moveD(cube);
+                break;
+            case "R2":
+                moveR(cube);
+                moveR(cube);
+                break;
+            case "L2":
+                moveL(cube);
+                moveL(cube);
+                break;
+            case "F2":
+                moveF(cube);
+                moveF(cube);
+                break;
+            case "B2":
+                moveB(cube);
+                moveB(cube);
+                break;
+            case "U2'":
+                moveU(cube);
+                moveU(cube);
+                moveU(cube);
+                moveU(cube);
+                moveU(cube);
+                moveU(cube);
+                break;
+            case "D2'":
+                moveD(cube);
+                moveD(cube);
+                moveD(cube);
+                moveD(cube);
+                moveD(cube);
+                moveD(cube);
+                break;
+            case "R2'":
+                moveR(cube);
+                moveR(cube);
+                moveR(cube);
+                moveR(cube);
+                moveR(cube);
+                moveR(cube);
+                break;
+            case "L2'":
+                moveL(cube);
+                moveL(cube);
+                moveL(cube);
+                moveL(cube);
+                moveL(cube);
+                moveL(cube);
+                break;
+            case "F2'":
+                moveF(cube);
+                moveF(cube);
+                moveF(cube);
+                moveF(cube);
+                moveF(cube);
+                moveF(cube);
+                break;
+            case "B2'":
+                moveB(cube);
+                moveB(cube);
+                moveB(cube);
                 moveB(cube);
                 moveB(cube);
                 moveB(cube);
