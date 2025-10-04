@@ -76,19 +76,19 @@ public class Moves {
 
 
     //helpers for row/col on direct f and b moves.
-    static String[] getRow(String[][] face, int r) {
+    private static String[] getRow(String[][] face, int r) {
         return new String[]{ face[r][0], face[r][1], face[r][2] };
     }
-    static void setRow(String[][] face, int r, String[] v) {
+    private static void setRow(String[][] face, int r, String[] v) {
         face[r][0] = v[0]; face[r][1] = v[1]; face[r][2] = v[2];
     }
-    static String[] getCol(String[][] face, int c) {
+    private static String[] getCol(String[][] face, int c) {
         return new String[]{ face[0][c], face[1][c], face[2][c] };
     }
-    static void setCol(String[][] face, int c, String[] v) {
+    private static void setCol(String[][] face, int c, String[] v) {
         face[0][c] = v[0]; face[1][c] = v[1]; face[2][c] = v[2];
     }
-    static String[] rev(String[] a) {
+    private static String[] rev(String[] a) {
         return new String[]{ a[2], a[1], a[0] };
     }
 

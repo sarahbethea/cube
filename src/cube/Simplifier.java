@@ -11,7 +11,7 @@ public class Simplifier {
         List<String> moveList = new ArrayList<>(moveArr.length);
         for (String move : moveArr) {
             if (move == null) continue;
-            move.trim().toUpperCase();
+            move = move.trim().toUpperCase();
             moveList.add(move);
         }
         return moveList;
