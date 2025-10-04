@@ -16,7 +16,6 @@ public class Solve {
             solution.add(reverse);
         }
         moves.clear();
-        System.out.println("Moves stack after solve: " + moves);
         return solution;
     }
 
