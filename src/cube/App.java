@@ -218,7 +218,10 @@ public class App {
                 case "Q":
                     scn.close();
                     return;
-
+                default:
+                    System.out.println("Invalid command: '" + move + "'");
+                    System.out.println("Type 'M' for menu or use valid moves: U, U', U2, D, D', D2, R, R', R2, L, L', L2, F, F', F2, B, B', B2");
+                    break;
             }
         }
     }
