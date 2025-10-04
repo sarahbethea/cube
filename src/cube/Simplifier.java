@@ -7,7 +7,7 @@ import java.util.Stack;
 public class Simplifier {
     // need to save moves from command line 
 
-    static List<String> toList(String[] moveArr) {
+    private static List<String> toList(String[] moveArr) {
         List<String> moveList = new ArrayList<>(moveArr.length);
         for (String move : moveArr) {
             if (move == null) continue;
@@ -17,42 +17,42 @@ public class Simplifier {
         return moveList;
     }
 
-    static String[] toArray(List<String> moveList) {
+    private static String[] toArray(List<String> moveList) {
         return moveList.toArray(new String[moveList.size()]); 
     }
 
-    static String getFace(String move) {
+    private static String getFace(String move) {
         // Get just the face without prime 
         // "U" -> "U", "U'" -> "U"
         return move.substring(0,1);
     }
 
-    static boolean isPrime(String move) {
+    private static boolean isPrime(String move) {
         // return true if prime
         return move.endsWith("'");
     }
 
-    static boolean isSameFace(String move1, String move2) {
+    private static boolean isSameFace(String move1, String move2) {
         // return true if both moves have same face
         return getFace(move1).equals(getFace(move2));
     }
 
-    static boolean areOpposites(String move1, String move2) {
+    private static boolean areOpposites(String move1, String move2) {
         // return true if same face and only one is prime 
         return isSameFace(move1, move2) && (isPrime(move1) != isPrime(move2));
     }
 
-    static boolean isDouble(String move) {
+    private static boolean isDouble(String move) {
         return move.endsWith("2");
     }
 
-    static String flipPrime(String move) {
+    private static String flipPrime(String move) {
         char face = Character.toUpperCase(move.charAt(0));
         boolean prime = move.length() >= 2 && move.charAt(1) == '\'';
         return prime ? ("" + face) : (face + "'");
     }
 
-    static List<String> cancelOutConsecutiveDoubles(List<String> moves) {
+    private static List<String> cancelOutConsecutiveDoubles(List<String> moves) {
         List<String> results = new ArrayList<>(moves.size());
 
         for (String move : moves) {

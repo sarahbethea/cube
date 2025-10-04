@@ -93,7 +93,7 @@ public class Moves {
     }
 
     //direct f and b moves
-    static void moveF(String[][][] cube) {
+    private static void moveF(String[][][] cube) {
         final int T=0, F=1, D=2, B=3, L=4, R=5;
 
         rotateFaceCW(cube, F);
@@ -110,7 +110,7 @@ public class Moves {
         setRow(cube[T], 2, l); 
     }
 
-    static void moveB(String[][][] cube) {
+    private static void moveB(String[][][] cube) {
         final int T=0, F=1, D=2, B=3, L=4, R=5;
 
         rotateFaceCW(cube, B);
