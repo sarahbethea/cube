@@ -12,7 +12,7 @@ import cube.Simplifier;
 import cube.Solve;
 
 public class App {
-    static Stack<String> moves = new Stack<>();
+    private static Stack<String> moves = new Stack<>();
 
     private static final String[][][] SOLVED_TEMPLATE = {
         {
