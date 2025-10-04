@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Stack;
 
 public class Simplifier {
-    // need to save moves from command line 
-
     private static List<String> toList(String[] moveArr) {
         List<String> moveList = new ArrayList<>(moveArr.length);
         for (String move : moveArr) {
@@ -57,8 +55,9 @@ public class Simplifier {
 
         for (String move : moves) {
             if (!results.isEmpty() && move.equals(results.get(results.size() - 1))) {
-                // consecutive identical -> cancel the pair
-                results.remove(results.size() - 1);
+                if (isDouble(move) && isDouble(results.get(results.size() - 1))) {
+                    results.remove(results.size() - 1);
+                }
             } else {
                 results.add(move);
             }   
