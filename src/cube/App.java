@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Stack;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Random;
 
 import cube.Moves;
 import cube.PrintCube;
@@ -174,37 +175,84 @@ public class App {
                     Moves.applyMoves(SOLVED, sln);
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
-                case "RANDOMIZE":
-                    System.out.println("Enter number of moves");
-                    int numMoves = Integer.parseInt(scn.nextLine());
-                    Randomizer.randomize(SOLVED, numMoves, moves);
+                case "RANDOMIZE": 
+                    while (true) {  
+                        System.out.println("Enter number of moves");
+                        String input = scn.nextLine().trim();
+                        if (input.isEmpty()) {
+                            System.out.println("Error: Please input a number.");
+                            continue;
+                        }
+                
+                        int numMoves;
+                        try {
+                            numMoves = Integer.parseInt(input);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: '" + input + "' is not a valid number.");
+                            continue; 
+                        }
+                
+                        if (numMoves <= 0) {
+                            System.out.println("Error: Number of moves must be positive.");
+                            continue; 
+                        }
+                
+                        if (numMoves > 1000) {
+                            System.out.println("Warning: Large number of moves may take a while. Continue? (y/n)");
+                            String confirm = scn.nextLine().trim().toLowerCase();
+                            if (!confirm.equals("y") && !confirm.equals("yes")) {
+                                continue; 
+                            }
+                        }
+                        Randomizer.randomize(SOLVED, numMoves, moves);
+                        break;
+                    }
                     break;
                 case "SIMPLIFY":
+                    if (moves.isEmpty()) {
+                        System.out.println("No moves to simplify.");
+                        break;
+                    }
+                
                     String[] movesArr = moves.toArray(new String[0]);
                     System.out.println("Moves: " + movesArr.length);
+                
                     String[] results = Simplifier.simplify(movesArr);
-
+                
                     System.out.println("Simplified moves:");
-                    for (String m : results) {
-                        System.out.print(m + " ");
-                    }
+                    for (String m : results) System.out.print(m + " ");
                     System.out.println();
                     System.out.println("Moves: " + results.length);
                     System.out.println();
-
-                    System.out.println("Do you want to solve using simplified moves? (y for yes)");
-                    String shouldSolve = scn.nextLine();
-                    if (shouldSolve.toUpperCase().equals("Y")) {
-                        Stack<String> resultsStack = new Stack<>();
-                        for (String result : results) {
-                            resultsStack.push(result);
+                
+                    // yes/no loop
+                    String shouldSolve;
+                    while (true) {
+                        System.out.print("Do you want to solve using simplified moves? (y/n): ");
+                        shouldSolve = scn.nextLine().trim().toLowerCase();
+                        if (shouldSolve.equals("y") || shouldSolve.equals("yes")
+                         || shouldSolve.equals("n") || shouldSolve.equals("no")
+                         || shouldSolve.isEmpty()) { // treat empty as "no"
+                            break;
                         }
+                        System.out.println("Please enter 'y' or 'n'.");
+                    }
+                
+                    if (shouldSolve.equals("y") || shouldSolve.equals("yes")) {
+                        if (results.length == 0) {
+                            System.out.println("Nothing to solve (no moves after simplification).");
+                            break;
+                        }
+                        Stack<String> resultsStack = new Stack<>();
+                        for (String result : results) resultsStack.push(result);
+                
                         sln = Solve.solve(resultsStack);
                         Moves.applyMoves(SOLVED, sln);
+                
                         resultsStack.clear();
                         moves.clear();
                         PrintCube.printCubeBlocks(SOLVED);
-                    } 
+                    }
                     break;
                 case "E":
                     PrintCube.printCubeBlocks(SOLVED);
