@@ -10,7 +10,6 @@ public class Randomizer {
     private static final String[] MOVES = {"U", "D", "L", "R", "F", "B", "U'", "D'", "L'", "R'", "F'", "B'"};
 
     public static void randomize(String[][][] cube, int numMoves, Stack<String>moves) {
-        System.out.println(moves);
         Random random = new Random();
 
         for (int i = 0; i < numMoves; i++) {

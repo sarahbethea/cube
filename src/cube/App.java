@@ -87,8 +87,6 @@ public class App {
 
         int argsIndex = 0;
 
-        // List<String> solution = new ArrayList<>();
-
         while (true) {
             String move = "";
             if (args.length > argsIndex) {
@@ -174,7 +172,6 @@ public class App {
                 case "SOLVE":
                     List<String> sln = Solve.solve(moves);
                     Moves.applyMoves(SOLVED, sln);
-                    // solution.clear();
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
                 case "RANDOMIZE":
@@ -197,7 +194,6 @@ public class App {
 
                     System.out.println("Do you want to solve using simplified moves? (y for yes)");
                     String shouldSolve = scn.nextLine();
-                    System.out.println(shouldSolve);
                     if (shouldSolve.toUpperCase().equals("Y")) {
                         Stack<String> resultsStack = new Stack<>();
                         for (String result : results) {
@@ -206,6 +202,7 @@ public class App {
                         sln = Solve.solve(resultsStack);
                         Moves.applyMoves(SOLVED, sln);
                         resultsStack.clear();
+                        moves.clear();
                         PrintCube.printCubeBlocks(SOLVED);
                     } 
                     break;
