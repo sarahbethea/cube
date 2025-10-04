@@ -9,8 +9,9 @@ public class Solve {
         while (!moves.empty()) {
             String move = moves.pop();
             String reverse = (move.contains("'")) ? move.substring(0, 1) : move + "'";
-            System.out.print(reverse + " ");
+            System.out.print("Solution:" + reverse + " ");
             solution.add(reverse);
+            moves.clear();
         }
         return solution;
     }
