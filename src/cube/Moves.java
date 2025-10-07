@@ -37,20 +37,7 @@ public class Moves {
         rotateFaceCCW(cube, L);
     }
 
-    private static void moveF(String[][][] cube) {
-        rotateCubeForward(cube);
-        rotateTopRowCW(cube);
-        rotateCubeBackward(cube);
-    }
-
-    private static void moveB(String[][][] cube) {
-        rotateCubeBackward(cube);
-        rotateTopRowCW(cube);
-        rotateCubeForward(cube);
-    }
-
-
-    public static void rotateFaceCW(String[][][] cube, int f) {
+    private static void rotateFaceCW(String[][][] cube, int f) {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
 
@@ -67,7 +54,7 @@ public class Moves {
         }
     }
 
-    public static void rotateFaceCCW(String[][][] cube, int f) {
+    private static void rotateFaceCCW(String[][][] cube, int f) {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
     
@@ -83,7 +70,7 @@ public class Moves {
         }
     }
 
-    public static void rotateCubeCW(String[][][] cube) {
+    private static void rotateCubeCW(String[][][] cube) {
         for (int i = 0; i < 6; i++) {
             rotateFaceCW(cube, i);
         }
@@ -95,7 +82,7 @@ public class Moves {
         cube[R] = temp;
     }
 
-    public static void rotateTopRowCW(String[][][] cube) {
+    private static void rotateTopRowCW(String[][][] cube) {
         rotateFaceCW(cube, 0);
 
         String[] temp = cube[R][0].clone();
@@ -105,11 +92,11 @@ public class Moves {
         cube[F][0] = temp;
     }
 
-    public static void moveU(String[][][] cube) {
+    private static void moveU(String[][][] cube) {
         rotateTopRowCW(cube);
     }
 
-    public static void moveD(String[][][] cube) {
+    private static void moveD(String[][][] cube) {
         rotateCubeCW(cube);
         rotateCubeCW(cube);
         rotateTopRowCW(cube);
@@ -117,7 +104,7 @@ public class Moves {
         rotateCubeCW(cube);
     }
 
-    public static void moveR(String[][][] cube) {
+    private static void moveR(String[][][] cube) {
         rotateCubeCW(cube);
         rotateCubeCW(cube);
         rotateCubeCW(cube);
@@ -125,12 +112,24 @@ public class Moves {
         rotateCubeCW(cube);
     }
 
-    public static void moveL(String[][][] cube) {
+    private static void moveL(String[][][] cube) {
         rotateCubeCW(cube);
         rotateTopRowCW(cube);
         rotateCubeCW(cube);
         rotateCubeCW(cube);
         rotateCubeCW(cube);
+    }
+
+    private static void moveF(String[][][] cube) {
+        rotateCubeForward(cube);
+        rotateTopRowCW(cube);
+        rotateCubeBackward(cube);
+    }
+
+    private static void moveB(String[][][] cube) {
+        rotateCubeBackward(cube);
+        rotateTopRowCW(cube);
+        rotateCubeForward(cube);
     }
 
     static void applyMoves(String[][][] cube, List<String> moves) {
