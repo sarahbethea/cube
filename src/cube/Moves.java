@@ -7,6 +7,49 @@ public class Moves {
 
     private Moves() {} // prevent instantiation
 
+    private static void rotateCubeBackward(String[][][] cube) {
+        String[][] temp = cube[T];
+        cube[T] = cube[B];
+        cube[B] = cube[D];
+        cube[D] = cube[F];
+        cube[F] = temp;
+
+        rotateFaceCCW(cube, R);
+        rotateFaceCW(cube, T);
+        rotateFaceCW(cube, T);
+        rotateFaceCW(cube, B);
+        rotateFaceCW(cube, B);
+        rotateFaceCW(cube, L);
+    }
+
+    private static void rotateCubeForward(String[][][] cube) {
+        String[][] temp = cube[T];
+        cube[T] = cube[F];
+        cube[F] = cube[D];
+        cube[D] = cube[B];
+        cube[B] = temp;
+
+        rotateFaceCW(cube, R);
+        rotateFaceCW(cube, D);
+        rotateFaceCW(cube, D);
+        rotateFaceCW(cube, B);
+        rotateFaceCW(cube, B);
+        rotateFaceCCW(cube, L);
+    }
+
+    private static void moveF(String[][][] cube) {
+        rotateCubeForward(cube);
+        rotateTopRowCW(cube);
+        rotateCubeBackward(cube);
+    }
+
+    private static void moveB(String[][][] cube) {
+        rotateCubeBackward(cube);
+        rotateTopRowCW(cube);
+        rotateCubeForward(cube);
+    }
+
+
     public static void rotateFaceCW(String[][][] cube, int f) {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
@@ -60,58 +103,6 @@ public class Moves {
         cube[B][0] = cube[L][0].clone();
         cube[L][0] = cube[F][0].clone();
         cube[F][0] = temp;
-    }
-
-
-    //helpers for row/col on direct f and b moves.
-    static String[] getRow(String[][] face, int r) {
-        return new String[]{ face[r][0], face[r][1], face[r][2] };
-    }
-    static void setRow(String[][] face, int r, String[] v) {
-        face[r][0] = v[0]; face[r][1] = v[1]; face[r][2] = v[2];
-    }
-    static String[] getCol(String[][] face, int c) {
-        return new String[]{ face[0][c], face[1][c], face[2][c] };
-    }
-    static void setCol(String[][] face, int c, String[] v) {
-        face[0][c] = v[0]; face[1][c] = v[1]; face[2][c] = v[2];
-    }
-    static String[] rev(String[] a) {
-        return new String[]{ a[2], a[1], a[0] };
-    }
-
-    //direct f and b moves
-    static void moveF(String[][][] cube) {
-        final int T=0, F=1, D=2, B=3, L=4, R=5;
-
-        rotateFaceCW(cube, F);
-
-        String[] u = getRow(cube[T], 2);
-        String[] r = getCol(cube[R], 0);
-        String[] d = getRow(cube[D], 0);
-        String[] l = getCol(cube[L], 2);
-
-        setCol(cube[R], 0, u);
-        setRow(cube[D], 0, r);
-        setCol(cube[L], 2, d);
-        setRow(cube[T], 2, l); 
-    }
-
-    static void moveB(String[][][] cube) {
-        final int T=0, F=1, D=2, B=3, L=4, R=5;
-
-        rotateFaceCW(cube, B);
-
-        String[] u = getRow(cube[T], 0);
-        String[] l = getCol(cube[L], 0);
-        String[] d = getRow(cube[D], 2);
-        String[] r = getCol(cube[R], 2);
-
-        //reverse where needed
-        setCol(cube[L], 0, u);
-        setRow(cube[D], 2, l);
-        setCol(cube[R], 2, rev(d));
-        setRow(cube[T], 0, rev(r));
     }
 
     public static void moveU(String[][][] cube) {
