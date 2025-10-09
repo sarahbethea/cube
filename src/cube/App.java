@@ -176,36 +176,40 @@ public class App {
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
                 case "RANDOMIZE": 
-                    while (true) {  
+                    int numMoves = -1;
+                    do {  
                         System.out.println("Enter number of moves");
                         String input = scn.nextLine().trim();
                         if (input.isEmpty()) {
                             System.out.println("Error: Please input a number.");
                             continue;
                         }
-                
-                        int numMoves;
+                        
+                        int n;
                         try {
-                            numMoves = Integer.parseInt(input);
+                            n = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
                             System.out.println("Error: '" + input + "' is not a valid number.");
                             continue; 
                         }
                 
-                        if (numMoves <= 0) {
+                        if (n <= 0) {
                             System.out.println("Error: Number of moves must be positive.");
                             continue; 
                         }
                 
-                        if (numMoves > 1000) {
+                        if (n > 1000) {
                             System.out.println("Warning: Large number of moves may take a while. Continue? (y/n)");
                             String confirm = scn.nextLine().trim().toLowerCase();
                             if (!confirm.equals("y") && !confirm.equals("yes")) {
                                 continue; 
                             }
                         }
-                        Randomizer.randomize(SOLVED, numMoves, moves);
+                        numMoves = n;
                         break;
+                    } while (numMoves < 0);
+                    if (numMoves > 0) {
+                        Randomizer.randomize(SOLVED, numMoves, moves);
                     }
                     break;
                 case "SIMPLIFY":
