@@ -88,7 +88,9 @@ public class App {
 
         int argsIndex = 0;
 
-        while (true) {
+        boolean playing = true;
+
+        while (playing) {
             String move = "";
             if (args.length > argsIndex) {
                 move = args[argsIndex];
@@ -176,36 +178,40 @@ public class App {
                     PrintCube.printCubeBlocks(SOLVED);
                     break;
                 case "RANDOMIZE": 
-                    while (true) {  
+                    int numMoves = -1;
+                    do {  
                         System.out.println("Enter number of moves");
                         String input = scn.nextLine().trim();
                         if (input.isEmpty()) {
                             System.out.println("Error: Please input a number.");
                             continue;
                         }
-                
-                        int numMoves;
+                        
+                        int n;
                         try {
-                            numMoves = Integer.parseInt(input);
+                            n = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
                             System.out.println("Error: '" + input + "' is not a valid number.");
                             continue; 
                         }
                 
-                        if (numMoves <= 0) {
+                        if (n <= 0) {
                             System.out.println("Error: Number of moves must be positive.");
                             continue; 
                         }
                 
-                        if (numMoves > 1000) {
+                        if (n > 1000) {
                             System.out.println("Warning: Large number of moves may take a while. Continue? (y/n)");
                             String confirm = scn.nextLine().trim().toLowerCase();
                             if (!confirm.equals("y") && !confirm.equals("yes")) {
                                 continue; 
                             }
                         }
-                        Randomizer.randomize(SOLVED, numMoves, moves);
+                        numMoves = n;
                         break;
+                    } while (numMoves < 0);
+                    if (numMoves > 0) {
+                        Randomizer.randomize(SOLVED, numMoves, moves);
                     }
                     break;
                 case "SIMPLIFY":
@@ -227,18 +233,17 @@ public class App {
                 
                     // yes/no loop
                     String shouldSolve;
-                    while (true) {
+                    do {
                         System.out.print("Do you want to solve using simplified moves? (y/n): ");
                         shouldSolve = scn.nextLine().trim().toLowerCase();
-                        if (shouldSolve.equals("y") || shouldSolve.equals("yes")
-                         || shouldSolve.equals("n") || shouldSolve.equals("no")
+                        if (shouldSolve.equals("y") 
+                         || shouldSolve.equals("n")
                          || shouldSolve.isEmpty()) { // treat empty as "no"
-                            break;
                         }
                         System.out.println("Please enter 'y' or 'n'.");
-                    }
+                    } while (!shouldSolve.equals("y") && !shouldSolve.equals("n"));
                 
-                    if (shouldSolve.equals("y") || shouldSolve.equals("yes")) {
+                    if (shouldSolve.equals("y")) {
                         if (results.length == 0) {
                             System.out.println("Nothing to solve (no moves after simplification).");
                             break;
@@ -262,7 +267,8 @@ public class App {
                     break;
                 case "Q":
                     scn.close();
-                    return;
+                    playing = false;
+                    break;
                 default:
                     System.out.println("Invalid command: '" + move + "'");
                     System.out.println("Type 'M' for menu or use valid moves: U, U', U2, D, D', D2, R, R', R2, L, L', L2, F, F', F2, B, B', B2");
