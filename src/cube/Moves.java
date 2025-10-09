@@ -2,8 +2,27 @@ package cube;
 
 import java.util.List;
 
+/**
+ * Low-level cube mutation utilities (face turns and whole-cube rotations).
+ *
+ * <p>Responsibilities:</p>
+ * <ul>
+ *   <li>Apply a single move token in-place to a 6×3×3 cube array.</li>
+ *   <li>Apply a sequence of move tokens in order.</li>
+ * </ul>
+ *
+ * <p>Expected move tokens (uppercase):</p>
+ * <ul>
+ *   <li>Quarter turns: U, D, R, L, F, B</li>
+ *   <li>Prime (counterclockwise): U', D', R', L', F', B'</li>
+ *   <li>Double turns: U2, D2, R2, L2, F2, B2</li>
+ * </ul>
+ *
+ * <p>All operations mutate the provided {@code cube} array in-place.</p>
+ */
 public class Moves {
-    public static final int T=0, F=1, D=2, B=3, L=4, R=5;
+    // Face indices: T=Top, F=Front, D=Down, B=Back, L=Left, R=Right
+    private static final int T=0, F=1, D=2, B=3, L=4, R=5;
 
     private Moves() {} // prevent instantiation
 
@@ -37,34 +56,36 @@ public class Moves {
         rotateFaceCCW(cube, L);
     }
 
+    // Rotate face clockwise
     private static void rotateFaceCW(String[][][] cube, int f) {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
 
-        // rotated[row][col] = old[2-col][row]
+        // rotated[row][col] = orig[2-col][row]
         for (int row = 0; row <  3; row++) {
             for (int col = 0; col < 3; col++) {
                 rotated[row][col] = orig[2-col][row];
             }
         }   
 
-        // copy rotated face back onto original
+        // Copy rotated to original
         for (int r = 0; r < 3; r++) {
             System.arraycopy(rotated[r], 0, orig[r], 0, 3);
         }
     }
 
+    // Rotate face counterclockwise
     private static void rotateFaceCCW(String[][][] cube, int f) {
         String[][] orig = cube[f];
         String[][] rotated = new String[3][3];
     
-        // Counterclockwise: rotated[row][col] = orig[col][2 - row]
+        // rotated[row][col] = orig[col][2 - row]
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 rotated[row][col] = orig[col][2 - row];
             }
         }
-        // copy back
+        // Copy rotated to original 
         for (int r = 0; r < 3; r++) {
             System.arraycopy(rotated[r], 0, orig[r], 0, 3);
         }
@@ -83,7 +104,7 @@ public class Moves {
     }
 
     private static void rotateTopRowCW(String[][][] cube) {
-        rotateFaceCW(cube, 0);
+        rotateFaceCW(cube, T);
 
         String[] temp = cube[R][0].clone();
         cube[R][0] = cube[B][0].clone();
@@ -132,6 +153,13 @@ public class Moves {
         rotateCubeForward(cube);
     }
 
+    /**
+     * Apply a list of move tokens in order.
+     *
+     * @param cube 6×3×3 cube state (mutated in-place)
+     * @param moves sequence of tokens (e.g., "U", "R'", "F2"); must be uppercase
+     * @throws IllegalArgumentException if any token is invalid
+     */
     static void applyMoves(String[][][] cube, List<String> moves) {
         for (int i = 0; i < moves.size(); i++) {
             String move = moves.get(i);
@@ -139,6 +167,13 @@ public class Moves {
         }
     }
 
+    /**
+     * Apply a single move token.
+     *
+     * @param cube 6×3×3 cube state (mutated in-place)
+     * @param move token: U/D/R/L/F/B with optional ' or 2 (uppercase)
+     * @throws IllegalArgumentException if {@code move} is not recognized
+     */
     static void applyMove(String[][][] cube, String move) {
         switch(move) {
             case "U":
@@ -213,58 +248,8 @@ public class Moves {
                 moveB(cube);
                 moveB(cube);
                 break;
-            case "U2'":
-                moveU(cube);
-                moveU(cube);
-                moveU(cube);
-                moveU(cube);
-                moveU(cube);
-                moveU(cube);
-                break;
-            case "D2'":
-                moveD(cube);
-                moveD(cube);
-                moveD(cube);
-                moveD(cube);
-                moveD(cube);
-                moveD(cube);
-                break;
-            case "R2'":
-                moveR(cube);
-                moveR(cube);
-                moveR(cube);
-                moveR(cube);
-                moveR(cube);
-                moveR(cube);
-                break;
-            case "L2'":
-                moveL(cube);
-                moveL(cube);
-                moveL(cube);
-                moveL(cube);
-                moveL(cube);
-                moveL(cube);
-                break;
-            case "F2'":
-                moveF(cube);
-                moveF(cube);
-                moveF(cube);
-                moveF(cube);
-                moveF(cube);
-                moveF(cube);
-                break;
-            case "B2'":
-                moveB(cube);
-                moveB(cube);
-                moveB(cube);
-                moveB(cube);
-                moveB(cube);
-                moveB(cube);
-                break;
             default:
                 throw new IllegalArgumentException("Invalid move: " + move);
         }
-
     }
-    
 }

@@ -2,8 +2,18 @@ package cube;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
+/**
+ * Simplifies a sequence of cube moves using local cancellation rules.
+ *
+ * <p>Rules applied (left-to-right):</p>
+ * <ul>
+ *   <li>Identical quarter turns → double turn (e.g., U + U → U2; U' + U' → U2)</li>
+ *   <li>Opposite quarter turns cancel (e.g., U + U' → ⌀)</li>
+ *   <li>One double + one quarter on same face → opposite of the quarter (e.g., U2 + U' → U)</li>
+ *   <li>Consecutive doubles on the same face cancel (e.g., U2 U2 → ⌀)</li>
+ * </ul>
+ */
 public class Simplifier {
     private static List<String> toList(String[] moveArr) {
         List<String> moveList = new ArrayList<>(moveArr.length);
@@ -65,7 +75,8 @@ public class Simplifier {
         return results;
     }
 
-    public static List<String> simplifyMoves(List<String> moves) {
+    // first pass simplifications
+    private static List<String> simplifyMoves(List<String> moves) {
         List<String> results = new ArrayList<>(moves.size());
 
         // For first pass, push move to results list
@@ -74,8 +85,7 @@ public class Simplifier {
                 results.add(move);
                 continue;
             }
-            
-            // Get the previous move of results list 
+
             String lastMove = results.get(results.size() - 1);
 
             if (isSameFace(lastMove, move)) {
@@ -107,13 +117,20 @@ public class Simplifier {
                 results.add(move);
                 continue;
             }
-            // Difference faces
+            // Different faces
             results.add(move);
 
         }
         return results;
     }
 
+    /**
+     * Simplify an array of tokens and return a new array.
+     * Trims/uppercases inputs, applies rules, and removes redundant doubles.
+     *
+     * @param moves raw tokens (may include null/whitespace)
+     * @return simplified tokens as a new array
+     */
     public static String[] simplify(String[] moves) {
         List<String> moveList = toList(moves);
         List<String> firstPass = simplifyMoves(moveList);

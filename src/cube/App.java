@@ -12,9 +12,26 @@ import cube.Randomizer;
 import cube.Simplifier;
 import cube.Solve;
 
+/**
+ * Console CLI for a Rubik's Cube simulator.
+ *
+ * <p>Responsibilities:</p>
+ * <ul>
+ *   <li>Deep-copy {@link #SOLVED_TEMPLATE} to create a working cube.</li>
+ *   <li>Read commands (args first, then stdin) and dispatch actions.</li>
+ *   <li>Track move history for simplify/solve.</li>
+ * </ul>
+ *
+ * <p>Commands:</p>
+ * <ul>
+ *   <li>Moves: U, U', U2, D, D', D2, R, R', R2, L, L', L2, F, F', F2, B, B', B2</li>
+ *   <li>SOLVE, RANDOMIZE, SIMPLIFY, E (print), M (menu), Q (quit)</li>
+ * </ul>
+ */
 public class App {
     private static Stack<String> moves = new Stack<>();
 
+    /** Immutable solved-state template; always copy with {@link #deepCopy(String[][][])}. */
     private static final String[][][] SOLVED_TEMPLATE = {
         {
             {"1w", "w", "w"}, 
@@ -53,7 +70,11 @@ public class App {
         }
     };
 
-    // Helper to create copy of cube for each game
+    /**
+     * Create an independent 6×3×3 copy of the given cube state.
+     * @param src source cube
+     * @return a new array whose rows are copied (strings reused; they are immutable)
+     */
     private static String[][][] deepCopy(String[][][] src) {
         String[][][] out = new String[src.length][][];
         for (int i = 0; i < src.length; i++) {
@@ -65,7 +86,6 @@ public class App {
         return out;
     }
 
-    // Print menu of options
     private static void printMenu() {
         System.out.println("=== CUBE COMMAND MENU ===");
         System.out.println("Moves: U, U', U2, D, D', D2, R, R', R2, L, L', L2, F, F', F2, B, B', B2");
@@ -79,6 +99,12 @@ public class App {
         System.out.println("=========================");
     }
 
+    /**
+     * Entry point. Runs tokens from {@code args} (if any) then switches to interactive input
+     * until {@code Q}.
+     * @param args optional commands to execute before reading from stdin
+     * @throws Exception if delegated operations propagate
+     */
     public static void main(String[] args) throws Exception {
         String[][][] SOLVED = deepCopy(SOLVED_TEMPLATE);
 
